@@ -1,15 +1,12 @@
 #include <BreadAndButter.h>
 #include <SPI.h> // MCP23S17 dependency
-#include <MCP23S17.h> 
+#include <MCP23S17.h>
 
 namespace BreadAndButter {
   namespace {
     const uint8_t ANALOG_IN_PIN_MAPPING[NUM_ANALOG_IN_PINS] = {A0, A1, A2, A3, A4};
     const uint8_t DIGITAL_IN_PIN_MAPPING[NUM_DIGITAL_IN_PINS] = {0, 1, 2, 3, 4};
     const uint8_t DIGITAL_OUT_PIN_MAPPING[NUM_DIGITAL_OUT_PINS] = {5, 6, 7, 8, 9};
-
-    const uint8_t NUM_PWM_COMPATIBLE_PINS = 3;
-    const uint8_t PWM_COMPATIBLE_PINS[NUM_PWM_COMPATIBLE_PINS] = {0, 1, 4};
 
     const uint8_t ERROR_LED_PIN = 13;
     const uint8_t ERROR_BLINK_INTERVAL_MS = 100;
@@ -20,11 +17,11 @@ namespace BreadAndButter {
     const uint8_t DIGITAL_OUT_PIN_OFFSET = 11;
 
     MCP enumerator(0);
-    
+
     void Error()
     {
       while (true) {
-        pinMode(ERROR_LED_PIN, OUTPUT);  
+        pinMode(ERROR_LED_PIN, OUTPUT);
         digitalWrite(ERROR_LED_PIN, HIGH);
         delay(ERROR_BLINK_INTERVAL_MS);
         digitalWrite(ERROR_LED_PIN, LOW);
@@ -72,7 +69,7 @@ namespace BreadAndButter {
     }
     digitalWrite(DIGITAL_OUT_PIN_MAPPING[pin], state);
   }
- 
+
   void DigitalPwmWrite(uint8_t pin, unsigned char value)
   {
     if (pin >= NUM_DIGITAL_OUT_PINS) {
@@ -82,7 +79,7 @@ namespace BreadAndButter {
     for (unsigned int i = 0; i < NUM_PWM_COMPATIBLE_PINS; i++) {
       if (pin == PWM_COMPATIBLE_PINS[i]) {
         analogWrite(DIGITAL_OUT_PIN_MAPPING[pin], value);
-        return; 
+        return;
       }
     }
 #else
@@ -95,13 +92,13 @@ namespace BreadAndButter {
   {
     Enumeration result;
     result.total = 0;
-    
+
     for (int i = 0; i < NUM_ANALOG_IN_PINS; i++) {
       if (enumerator.digitalRead(i + ANALOG_IN_PIN_OFFSET + ENUMERATOR_PIN_OFFSET)) {
         result.total++;
         result.analogIn[i] = true;
       } else {
-        result.analogIn[i] = false; 
+        result.analogIn[i] = false;
       }
     }
 
@@ -110,7 +107,7 @@ namespace BreadAndButter {
         result.total++;
         result.digitalIn[i] = true;
       } else {
-        result.digitalIn[i] = false; 
+        result.digitalIn[i] = false;
       }
     }
 
@@ -119,12 +116,12 @@ namespace BreadAndButter {
         result.total++;
         result.digitalOut[i] = true;
       } else {
-        result.digitalOut[i] = false; 
+        result.digitalOut[i] = false;
       }
     }
     return result;
   }
-  
+
   bool IsPwmCompatible(uint8_t digitalOutPin)
   {
 	if (digitalOutPin >= NUM_DIGITAL_OUT_PINS) {
