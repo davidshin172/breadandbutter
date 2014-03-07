@@ -33,10 +33,10 @@ namespace BreadAndButter {
   void InitShield()
   {
     for (unsigned int i = 0; i < NUM_DIGITAL_IN_PINS; i++) {
-      pinMode(i, INPUT);
+      pinMode(DIGITAL_IN_PIN_MAPPING[i], INPUT);
     }
     for (unsigned int i = 0; i < NUM_DIGITAL_OUT_PINS; i++) {
-      pinMode(i, OUTPUT);
+      pinMode(DIGITAL_OUT_PIN_MAPPING[i], OUTPUT);
     }
   }
 
@@ -54,7 +54,7 @@ namespace BreadAndButter {
       Error();
     }
 
-    return DigitalRead(DIGITAL_IN_PIN_MAPPING[pin]);
+    return digitalRead(DIGITAL_IN_PIN_MAPPING[pin]);
   }
 
   void DigitalWrite(uint8_t pin, int state)
