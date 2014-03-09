@@ -85,7 +85,6 @@ namespace BreadAndButter {
 #else
     analogWrite(DIGITAL_OUT_PIN_MAPPING[pin], value);
 #endif
-    Error();
   }
 
   Enumeration Enumerate()
